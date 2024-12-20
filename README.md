@@ -13,6 +13,9 @@ This project uses that framework to create a platform which connects donors to U
 
 All of this assumes that there are donors willing to deposit USDC into the contract for students to claim after their book purchases.
 
+## File/Code Breakdown
+
+
 ## Other ways this framework could be used
 I think ZKEmail creates a very powerful ability to link Web2 and Web3 identity, allowing people to prove some sort of web2 identity (in this case email address) to programmatically send/receive moeny based on that identity.
 
@@ -20,7 +23,7 @@ For example, funding teachers looking to purchase school supplies from Staples (
 
 Additionally, the UCLA Internet Research Initiative could use a platform like this. The UCLA Internet Research Initiative gives ~10 students $7500 over the course of a school year to spend towards a research project. Every student who wins the 'research scholarship' receives a congradulatory email from Professor Leonard Kleinrock. A project with a framework similar to this one could be created where students who receive the congradulatory email generate a cryptographic proof from it, and submit the proof to a smart contract which verifies the validity of the email and disperses $7500 to every person who submits a valid email. This example does not require a Chainlink Oracle.
 
-To Do:
+###To Do:
 - Create a frontend for proof generation.
 - Create some form of limit on withdraws. You don't want a student to buy $1000 worth of books, then claim $1000 from the smart contract, and then resell all of the books online to make a proft.
 - Prevent someone from claiming money twice from the same purchase (very simple lol just forgot to do this earlier).
