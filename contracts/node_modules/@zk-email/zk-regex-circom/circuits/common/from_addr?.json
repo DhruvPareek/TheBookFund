@@ -1,0 +1,20 @@
+{
+  "parts": [
+    {
+      "is_public": false,
+      "regex_def": "(\r\n|^)from:"
+    },
+    {
+      "is_public": false,
+      "regex_def": "([^\r\n]+<)?"
+    },
+    {
+      "is_public": true,
+      "regex_def": "[^<>]+"
+    },
+    {
+      "is_public": false,
+      "regex_def": ">?\r\n"
+    }
+  ]
+}

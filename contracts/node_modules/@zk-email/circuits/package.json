@@ -1,0 +1,46 @@
+{
+  "name": "@zk-email/circuits",
+  "version": "6.3.2",
+  "license": "MIT",
+  "scripts": {
+    "publish": "yarn npm publish --access=public",
+    "test": "NODE_OPTIONS=--max_old_space_size=8192 jest --runInBand --detectOpenHandles --forceExit --verbose tests"
+  },
+  "dependencies": {
+    "@zk-email/zk-regex-circom": "^2.3.1",
+    "circomlib": "^2.0.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.2",
+    "@babel/preset-typescript": "^7.21.5",
+    "babel-jest": "^29.5.0",
+    "babel-preset-jest": "^29.5.0",
+    "circom_tester": "^0.0.20",
+    "circomlibjs": "^0.1.7",
+    "jest": "^29.5.0",
+    "typescript": "^5.2.2"
+  },
+  "files": [
+    "/helpers",
+    "/lib",
+    "/utils",
+    "./email-verifier.circom"
+  ],
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
+      "@babel/preset-typescript",
+      [
+        "jest"
+      ]
+    ]
+  }
+}

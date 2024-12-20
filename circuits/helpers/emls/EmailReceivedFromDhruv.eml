@@ -1,0 +1,101 @@
+Delivered-To: dhruvpareek12@ucla.edu
+Received: by 2002:a05:7208:208c:b0:8b:2032:4995 with SMTP id y12csp575032rby;
+        Tue, 1 Oct 2024 21:57:40 -0700 (PDT)
+X-Received: by 2002:a05:6a20:7528:b0:1d6:c98b:bddf with SMTP id adf61e73a8af0-1d6c98bbdf1mr2014128637.4.1727845060570;
+        Tue, 01 Oct 2024 21:57:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1727845060; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fbBL6bhc0+FzBfdoVu2d2fF3W1YvRBjZArXBRCbbaej/Ku6TObiwdkIzh99cwVzk0/
+         +likOa4NFuWJfjnbZG3piRGwohRxgUazBvaizjne91YMo5EzyzPoocx67YWmx4H+zxBr
+         iN70yNUQqi0Osk1TLdt64bFVTRuS++fMCfvttAhRqbMv8J0hhT45b3pHL3eJnmZr3CeR
+         Qr7PAkfBdDib0xIEeZZ4qhM3qkQ+DFxWQoXDrm3KESnh+CvW46Fscigbi/tipsJKS6/S
+         Lbt+lQbQCASuCCqtox5xDT4XoYlGDskf/gn8XfM3nxy/BhjsOpK8xjm4usJ+KtrYCRch
+         W+Aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=UJjenTElsT2nSIukilrB7KiyqAUoX9Jytf6AzesHIHE=;
+        fh=HlieIk4ZDxPpkIOWEQ+n2AiOD6TH+7KIQvwIbgsdQnI=;
+        b=SKXVn0IwpmlnNJ7RhhlrNa146EpDY+xzMDDXDI03Tn0Ihpdhnwkl7kbOuHqHFxs1qP
+         4wYQyjd0XHXNxryW8xhpUW+6ouIHepS5LLSu1VwKf088WhyLp7Rjh0pKMyi4lP0ZXv0Y
+         MwtzTge5yrnKcMrqPVXl7Cp/d0ytPvwdcBMJB0PrmfcztqoefN83GCwJ2nOslf2KwGvn
+         pgrofJNoFilbIZ2aAYeYAgb5fyUzkZNE/1Ixwn8/l6YMreeGiTaDaLTybx31us02qoC4
+         qoaHvtOgaWvMOz0sMvRH3nlGaUZx6SEEp8GXzRA6QjOBP7U4MHXURsAzX8rDgu3b15Dg
+         1bpw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=VSAD2x0R;
+       spf=pass (google.com: domain of dhruvpareek883@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=dhruvpareek883@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@ucla.edu
+Return-Path: <dhruvpareek883@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id d2e1a72fcca58-71c66488f3bsor4934954b3a.7.2024.10.01.21.57.40
+        for <dhruvpareek12@ucla.edu>
+        (Google Transport Security);
+        Tue, 01 Oct 2024 21:57:40 -0700 (PDT)
+Received-SPF: pass (google.com: domain of dhruvpareek883@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=VSAD2x0R;
+       spf=pass (google.com: domain of dhruvpareek883@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=dhruvpareek883@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@ucla.edu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727845060; x=1728449860; darn=ucla.edu;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UJjenTElsT2nSIukilrB7KiyqAUoX9Jytf6AzesHIHE=;
+        b=VSAD2x0R3eT+uZInCFHJ+0PSwO/qnCMc0O+VhxL3TBYn5Jncb7FcWHk0kV+no/sOac
+         jBLQcHBEybjHzz0T+mJMhzZ+z0AkWfJhzE1CFh7HN/awD4LEL1STlYgtSn67Rk0rk6AR
+         8hAe0+GHUEjyNgt1p8fbhlGugtLufq0bpo9HFqYSDE6kwq1x3oPwBiIsYoPUe2IOjSDg
+         vsIrxY4155HHgJUNrdAK+B8lJn/7GX1Gd3c4aZgqboyhJHsZPRwfMIVhlKFoLIWbcVBj
+         KwJc4Uevxz8vAYv31OiT6wn90psCiBkisjdq02+c/DS4SNPzWp6JGM/pj0BxnR0S+bbW
+         BdFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727845060; x=1728449860;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UJjenTElsT2nSIukilrB7KiyqAUoX9Jytf6AzesHIHE=;
+        b=nlwMejpHVfX5IN5ksTCzaK8rSOFE3yXzixFXHlncOeI6MUJcudDm01M7cSL2cAuc2w
+         9qwkpwEeND7SAAeR0C+WR45XLK2sgWtkkR2fZCyTwoNPfX5MDDrsIngggEZFNKynqUnP
+         N+1YjeccwICY6Qrmo4ZSxgKhYRPQsg6eoD2BrmXsY/WWh+ubHBG83HjczrIeNqpGXKwv
+         fhNq0xDtgzdWLLBcjE4YJimv2NeFK70pfwlAOFScc5gP212ndsNmlMhmcqM5dsPT9TfT
+         g4bvtBxe5Qy3p4l1VsrzwaPGlyOW+nwmi7Hf3qVsWBH02MWYK3eH7QW+d82lS4S9181n
+         +zsg==
+X-Gm-Message-State: AOJu0YyJqWSqao0Qn2AK+1hYz2xRQ2pOZMcZRey9V5tfsj2PU9OTNIFO
+	UxdsOhp4Elqui12XsxprTXz/ybYA3zTDRe8s3WCU8cfTF/6q0kdbV9GmEmcBMp5d0VCrdZPmY6n
+	py+ytJkJbBKkj5LhWb4C2HxOqYORFX+Y5
+X-Google-Smtp-Source: AGHT+IHJggp91syXoBJ2bU4XTNDAzjaBMwwU2No2pWe79tqhHmsuYFzguTCR6XVUBCjVCOWSmk0kJXy0uq/9D3pz9mg=
+X-Received: by 2002:a05:6a00:181b:b0:717:9897:1405 with SMTP id
+ d2e1a72fcca58-71dc5d532b6mr3340865b3a.17.1727845059646; Tue, 01 Oct 2024
+ 21:57:39 -0700 (PDT)
+MIME-Version: 1.0
+From: Dhruv Pareek <dhruvpareek883@gmail.com>
+Date: Tue, 1 Oct 2024 21:57:28 -0700
+Message-ID: <CAF+kaDBDn_Sk7AbULCWmF9aK+UTP7BoJq04MAvDW8dvGoDBy0Q@mail.gmail.com>
+Subject: Congrats! Email Received From Dhruv
+To: Dhruv Pareek <dhruvpareek12@ucla.edu>
+Content-Type: multipart/alternative; boundary="00000000000001ded50623774785"
+
+--00000000000001ded50623774785
+Content-Type: text/plain; charset="UTF-8"
+
+Your Email Address Is: dhruvpareek12@g.ucla.edu
+
+--00000000000001ded50623774785
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail-gs" style=3D"margin:0px;min-width:0px;=
+padding:0px 0px 20px;width:initial;font-family:&quot;Google Sans&quot;,Robo=
+to,RobotoDraft,Helvetica,Arial,sans-serif;font-size:medium"><div class=3D"g=
+mail-"><div id=3D"gmail-:14t" class=3D"gmail-ii gmail-gt" style=3D"directio=
+n:ltr;margin:8px 0px 0px;padding:0px;font-size:0.875rem;overflow-x:hidden">=
+<div id=3D"gmail-:14s" class=3D"gmail-a3s gmail-aiL" style=3D"direction:ltr=
+;font-variant-numeric:normal;font-variant-east-asian:normal;font-variant-al=
+ternates:normal;font-size-adjust:none;font-kerning:auto;font-feature-settin=
+gs:normal;font-stretch:normal;font-size:small;line-height:1.5;font-family:A=
+rial,Helvetica,sans-serif;overflow:auto hidden"><div dir=3D"ltr">Your Email=
+ Address Is:=C2=A0<a href=3D"mailto:dhruvpareek12@g.ucla.edu" target=3D"_bl=
+ank">dhruvpareek12@g.ucla.edu</a></div></div></div></div></div></div>
+
+--00000000000001ded50623774785--
