@@ -45,6 +45,14 @@ The contracts/src folder contains the smart contract logic.
    - EmailOracle.sol uses Chainlink Functions to interact with the mock database of book purchases in order to determine how much money someone with the email address "XXX@g.ucla.edu" spent at the book store.
    - The verifyProof() function in verifier.sol verifies proofs generated with the circom circuits for the project.
 
+## How to Use
+#### Part 1: Generate The Proof
+   Follow these steps in the circuits/src folder, these steps are analagous to the Usage Guide for ZKEmail: https://docs.zk.email/zk-email-verifier/usage-guide
+   1. Follow the ZKEmail setup guide to download necessary packages: https://docs.zk.email/zk-email-verifier/setup
+   2. Install Rust and Circom: https://docs.circom.io/getting-started/installation/#installing-dependencies
+   3. Compile the DhruvEmailVerifier.circom circuit `circom -l node_modules DhruvEmailVerifier.circom -o --r1cs --wasm --sym --c --O0`
+   4. Enter circuits/helpers and run `npx ts-node inputs.ts` to generate the inputs for the circuit. You can see at the bottom of inputs.ts that it is preset to use the LakEmail.eml file to generate inputs.
+
 ## Other Possibilities
 ZKEmail creates a very powerful ability to link Web2 and Web3 identity, allowing people to prove some sort of web2 identity (in this case email address) on-chain. I built on that to programmatically send/receive money based on a web2 identity.
 
