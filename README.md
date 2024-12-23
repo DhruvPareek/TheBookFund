@@ -1,43 +1,61 @@
 # The Book Fund
-A proof of concept of a method to disperse funds to targeted recipients with ZKEmail zero knowledge proofs and a Chainlink Oracle. More specifically, a method to allow people to verify their identity onchain via a cryptographic proof generated from a received email, then disperse some amount of USDC to the verified identity based on a defined mapping of identities to values stored in a database accessed by a Chainlink Oracle.
+A proof of concept of a method to disperse funds to targeted recipients using zero knowledge proofs (generated with the ZKEmail library) and an oracle (Chainlink Functions). More specifically, a method to allow people to verify their identity onchain via a cryptographic proof generated from a received email, then disperse some amount of USDC to the verified identity based on a defined mapping of identities to values stored in a database accessed by a Chainlink Oracle.
 
-This project uses that framework to create a platform which connects donors to UCLA students purchasing books. This works by:
-   1. A UCLA student Joe Bruin (with email address joebruin@g.ucla.edu) purchases a book online through an online retailer for $23.94.
-   2. The retailer stores the book purchase in their database as a mapping of joebruin@g.ucla.edu-->$23.94.
-   3. The Joe Bruin generates a cyrptographic proof with a zkey generated from the circuits/src/DhruvEmailVerifier.circom circuit. The proof generation requires an eml file from an email sent to an @g.ucla.edu email address of a specific format. By submitting this eml file of a received email to generate a proof allows Joe Bruin to prove to others that he is a UCLA student in control of the email address joebruin@g.ucla.edu.
-   4. Joe Bruin submits this proof to the VerifyEmail function of the smart contract contracts/src/TheFund.sol. If the proof can be verified, joebruin@g.ucla.edu is stored in a mapping in the smart contract which saves email addresses to the ethereum address used to verify that email address.
-   5. Joe Bruin calls the claimFunds() function to claim USDC corresponding to his purchase of books from the book store.
+This project implements that framework to create a platform which connects "donors" to UCLA students purchasing items from a retailer, allowing UCLA students who purchased something to redeem money equivalent to their purchases. I specified it further, by using books and a book retailer as the pretend example. The project works by:
+   1. A donor "deposits" or "donates" USDC into the smart contract.
+   2. Joe Bruin, a UCLA student (with email address joebruin@g.ucla.edu), purchases a book online through an online retailer for $23.94 (arbitrary amount).
+   3. The retailer stores the book purchase in their database as a mapping of: "joebruin@g.ucla.edu"-->$23.94.
+   4. Joe Bruin some email he received at joebruin@g.ucla.edu to generate a cryptographic proof.
+   5. Joe uses his ethereum account with address 0xabc to submit the cryptographic proof to a 'verify()' function in a smart contract. If the proof is verified, the smart contract saves the mapping of: "joebruin@g.ucla.edu"-->0xabc.
+   6. Joe then calls the claimFunds() to be repaid for the amount of USDC he spent at the book store.
+   7. claimFunds() makes an oracle call to the book retailer's database with "joebruin@g.ucla.edu" as the identifier. The oracle call will return $23.94.
+   8. The smart contract sneds $23.94 worth of USDC to 0xabc.
+
+The steps again in further detail:
+
+   1. A donor "deposits" or "donates" USDC into the contracts/src/TheFund.sol smart contract.
+   2. Joe Bruin, a UCLA student (with email address joebruin@g.ucla.edu), purchases a book online through an online retailer for $23.94 (arbitrary amount).
+   3. The retailer stores the book purchase in their database as a mapping of: "joebruin@g.ucla.edu"-->$23.94.
+   4. Joe Bruin generates a cryptographic proof with a zkey generated from the circuits/src/DhruvEmailVerifier.circom circuit. Joe generates the proof using values from an email he received at "joebruin@g.ucla.edu" as the inputs to the circuit. By using an email Joe received at "joebruin@g.ucla.edu" to generate inputs to the circuit allows Joe Bruin to generate a proof that proves to others that he is a UCLA student in control of the email address joebruin@g.ucla.edu.
+   5. Joe Bruin submits this proof to the VerifyEmail() function of contracts/src/TheFund.sol using his ethereum address 0xabc. If the proof is verified, "joebruin@g.ucla.edu" is stored in a mapping in the smart contract as: "joebruin@g.ucla.edu"-->0xabc.
+   6. Joe Bruin calls the claimFunds() function to claim USDC corresponding to his purchase of books from the book store.
       - claimFunds() calls requestPriceData() from the EmailOracle smart contract.
-      - requestPriceData() uses Chainlink Function's AnyAPI service to make a request to the API "https://y3ugr0hill.execute-api.us-east-1.amazonaws.com/production/email?student_email=joebruin@g.ucla.edu" (a mockAPI I created to mimick a book store's database) with Joe Bruin's email address. This API request and corresponding oracle request will return $23.94, because that is the value in the database that the book retailer saved.
-   6. Upon the oracle request returning, the function fulfill() from the EmailOracle contract will call transferUSDC() from the TheFund contract. transferUSDC() will send $23.94 to Joe Bruin's ethereum address.
+      - requestPriceData() uses Chainlink Function's AnyAPI service to make a request to the API "https://y3ugr0hill.execute-api.us-east-1.amazonaws.com/production/email?student_email=joebruin@g.ucla.edu" (a mockAPI I created to mimick a book store's database). This API request and corresponding oracle request will return $23.94, because that is the value in the database that is saved corresponding to "joebruin@g.ucla.edu".
+   7. Upon the oracle request returning, the function fulfill() from the EmailOracle contract will call transferUSDC() from the TheFund contract. transferUSDC() will send $23.94 to Joe Bruin's ethereum address.
 
-All of this assumes that there are donors willing to deposit USDC into the contract for students to claim after their book purchases.
+Two assumptions:
+ - The Oracle in this smart contract uses an API with access to the book retailer's database of purchases.
+ - Donors are willing to donate USDC into the smart contract.
 
-Additionally, I constructed the circom circuits in this project so that the downloaded eml file of an email that someone uses to generate verify his identity must be sent by dhruvpareek883@gmail.com and contain an email address in the body that matches the regex of the form: [a-zA-Z0-9._]+@g\.ucla\.edu. So Joe Bruin would have to receive an email from dhruvpareek883@gmail.com that says "joebruin@g.ucla.edu" in the body of the email to generate a valid proof for his identity.
+
+Additionally, this project has constraints on the email Joe Bruin can use to generate a proof. I constructed the circom circuits in this project so that the email that someone uses to verify his identity must be sent by dhruvpareek883@gmail.com and contain an email address in the body that matches the regex of the form: [a-zA-Z0-9._]+@g\.ucla\.edu. So Joe Bruin would have to receive an email from dhruvpareek883@gmail.com that says "joebruin@g.ucla.edu" in the body of the email to generate a valid proof for his identity.
 
 ## File/Code Breakdown
 The circuits/src folder contains the circom circuits used to generate proofs that verify someone is a UCLA student by proving control of an @g.ucla.edu email address. Essentially, someone will submit an eml file (which is simply an email that they downloaded) to generate a proof based on these circuits. To understand how ZKEmail's library of circuits works to create cryptographic proofs of the contents and metadata of emails, read more here: https://docs.zk.email/architecture/dkim-verification.
-   - DhruvEmailVerifier.circom is the main circuit. It verifies the DKIM signatures of the submitted email are valid and it uses:
+   - DhruvEmailVerifier.circom is the main circuit. It verifies the DKIM signatures of the submitted email are valid while also exposing the sender and body of the email. This circuit depends on:
         - Dhruv_Sender_Regex.circom to verify that the submitted eml file is an email sent by dhruvpareek883@gmail.com. This circom circuit was generated by https://zkregex.com/, which converts regex to circom circuits.
         - UCLA_Email_Regex.circom to verify that there is some email address in the body of the email that matches the regex "[a-zA-Z0-9._]+@g\.ucla\.edu". This circuit was also generated by https://zkregex.com/.
 
 The circuits/helpers/inputs.ts file can be used to generate inputs to the circom circuits from an eml file. Example eml files that can create a valid proof can be found in circuits/helpers/emls.
 
 The contracts/src folder contains the smart contract logic. 
-   - TheFund.sol is the point of interaction for users. First, a user would call the VerifyEmail() function with their proof as the parameters to link their Ethereum Address to their @g.ucla.edu email address (this function uses the verifier.sol file to do the proof verification). Then, a user would call claimFunds() with their email address as the parameter to intiate the process to receive USDC from the smart contract to refund them for their book purchases (claimFunds intiates the oracle call to the book database through EmailOracle.sol to determine how much USDC the user should receive). depositUSDC is the function to donate USDC to the fund.
+   - TheFund.sol is the point of interaction for users.
+          - First, a user would call the VerifyEmail() function with their proof as the parameters. The VerifyEmail() function uses the verifier.sol file to do the proof verification. If the proof is verified, then the mapping from user's email address to ethereum address is saved.
+          - Then, a user would call claimFunds() with their email address as the parameter to intiate the process to receive USDC from the smart contract to refund them for their book purchases (claimFunds intiates the oracle call to the book database through EmailOracle.sol to determine how much USDC the user should receive).
+          - depositUSDC() is the function used to donate USDC to the fund.
    - EmailOracle.sol uses a Chainlink Functions oracle to interact with the mock database of book purchases in order to determine how much money someone with the email address "XXX@g.ucla.edu" spent at the book store.
    - The verifyProof() function in verifier.sol verifies proofs generated with the circom circuits for the project.
 
-## Other ways this framework could be used
+## Other Possibilities
 ZKEmail creates a very powerful ability to link Web2 and Web3 identity, allowing people to prove some sort of web2 identity (in this case email address) to programmatically send/receive moeny based on that identity.
 
-For example, funding teachers looking to purchase school supplies from Staples (or any other retailer of that type) to stock their classrooms. Say a teacher purchases school supplies from Staples, and Staples saves her purchases alongside her school district email address in their database. Then, there could be a platform similar to this one which connects donors (depositors of USDC), to school teachers who verify their email addresses cryptographically, and uses Staples's database of purchases to verify the amount of the teachers' purchase to distribute back to them.
+For example, this project could be altered to fund teachers looking to purchase school supplies from Staples (or any other retailer of that type) to stock their classrooms. Say a teacher purchases school supplies from Staples, then Staples saves her purchase amount alongside her school district email address in their database. A project similar to this one could connect donors (depositors of USDC) to school teachers who verify their email addresses cryptographically, and the project would need to use Staples's database of purchases to verify the amount of the teachers' purchase to distribute back to them.
 
-As another example, the UCLA Internet Research Initiative could use a platform like this. The UCLA Internet Research Initiative gives ~10 students $7500 over the course of a school year to spend towards a research project. Every student who wins the 'research scholarship' receives a congradulatory email from Professor Leonard Kleinrock. A project with a framework similar to this one could be created where students who receive the congradulatory email generate a cryptographic proof from it, and submit the proof to a smart contract which verifies the validity of the email and disperses $7500 to every person who submits a valid email. This example does not require a Chainlink Oracle.
+As another example, the UCLA Internet Research Initiative could use a platform like this. The UCLA Internet Research Initiative gives 10-15 students $7500 over the course of a school year to spend towards a research project. Every student who wins the 'research scholarship' receives a congradulatory email from Professor Leonard Kleinrock. A project with a framework similar to this one could be created where students who receive the congradulatory email generate a cryptographic proof from it, and submit the proof to a smart contract which verifies the validity of the email and disperses $7500 to every person who submits a valid email. This example would not require an Oracle.
 
 ### To Do:
 - Create a frontend for proof generation.
-- Create some form of limit on withdraws. You don't want a student to buy $1000 worth of books, then claim $1000 from the smart contract, and then resell all of the books online to make a proft.
+- Create some form of limit on withdraws. You don't want a student to buy $1000 worth of books, then claim $1000 from the smart contract, and then resell all of the books online to make a proft. The amount that can be withdrawan should be limited below $100.
 - Prevent someone from claiming money twice from the same purchase (very simple lol just forgot to do this earlier).
 - Get access to some online retailer's database of purchases.
 - Create some type of work around for the Chainlink Functions Oracle because Functions is in Beta.
