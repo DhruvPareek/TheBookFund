@@ -48,10 +48,25 @@ The contracts/src folder contains the smart contract logic.
 ## How to Use
 #### Part 1: Generate The Proof
    Follow these steps in the circuits/src folder, these steps are analagous to the Usage Guide for ZKEmail: https://docs.zk.email/zk-email-verifier/usage-guide
-   1. Follow the ZKEmail setup guide to download necessary packages: https://docs.zk.email/zk-email-verifier/setup
-   2. Install Rust and Circom: https://docs.circom.io/getting-started/installation/#installing-dependencies
-   3. Compile the DhruvEmailVerifier.circom circuit `circom -l node_modules DhruvEmailVerifier.circom -o --r1cs --wasm --sym --c --O0`
-   4. Enter circuits/helpers and run `npx ts-node inputs.ts` to generate the inputs for the circuit. You can see at the bottom of inputs.ts that it is preset to use the LakEmail.eml file to generate inputs.
+   1. Run `yarn install`
+   2. Follow the ZKEmail setup guide to download necessary packages: https://docs.zk.email/zk-email-verifier/setup
+   3. Install Rust and Circom: https://docs.circom.io/getting-started/installation/#installing-dependencies
+   4. Compile the DhruvEmailVerifier.circom circuit `circom -l ../node_modules DhruvEmailVerifier.circom -o --r1cs --wasm --sym --c --O0`
+   5. Enter circuits/helpers and run `npx ts-node inputs.ts` to generate the inputs for the circuit. You can see at the bottom of inputs.ts that it is preset to use the LakEmail.eml file to generate inputs.
+   6. Compute the witness with the command `node DhruvEmailVerifier_js/generate_witness.js DhruvEmailVerifier_js/DhruvEmailVerifier.wasm ../helpers/inputLak.json witness.wtns`
+   7. Run Phase 2 of the Powers of Tau Ceremony. Follow the initial setup steps and then start from step 11 here: https://github.com/iden3/snarkjs
+        - To avoid out-of-memory errors in snarkjs for large circuits, increase Node.js memory with node --max-old-space-size=<size>, where <size> is in kilobytes.
+              `node --max-old-space-size=614400 ./../node_modules/.bin/snarkjs`
+        - To download the powersoftau file: `wget https://storage.googleapis.com/zkevm/ptau/powersOfTau28_hez_final_22.ptau`
+        - This is computationally intensive, so a lot of these steps I've needed run on an AWS EC2 isntance.
+   8. Once you have your proof, run `snarkjs zkey export soliditycalldata public.json proof.json` to get the inputs for the verify() function from the smart contract.
+
+#### Part 2: Verify Proof + Redeem USDC
+   1. Deposit USDC into TheFund.sol.
+   2. Call VerifyEmail() in TheFund.sol with the paramters being the result of step 8 from part 1.
+   3. Then call claimFunds() with the email address parameter being the receiver of the email used to generate the proof in part 1. For the example given from earlier in the ReadMe file, the parameter would be "joebruin@g.ucla.edu".
+   4. Wait about 15-30 seconds for the oracle to complete its process and USDC to be sent to your wallet.
+
 
 ## Other Possibilities
 ZKEmail creates a very powerful ability to link Web2 and Web3 identity, allowing people to prove some sort of web2 identity (in this case email address) on-chain. I built on that to programmatically send/receive money based on a web2 identity.
