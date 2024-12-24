@@ -3,13 +3,13 @@ A proof of concept of a method to disperse funds to targeted recipients using ze
 
 This project creates a platform that connects “donors” to UCLA students who purchase items from a retailer, allowing them to redeem an equivalent amount of USDC. For example, students who buy books at a retailer can receive USDC equal to their book purchases.
 
-#### Concept Overview
+#### Overview
 
 1. Donor deposits USDC in a smart contract.
 2. Student (Joe Bruin) makes a purchase with a known email address.
 3. Retailer records that purchase amount in their database.
-4. Student proves they control that email via a zero-knowledge proof.
-5. Student claims the USDC equivalent of their purchase from the contract, with the help of a Chainlink Functions oracle that checks the database.
+4. Student proves to a smart contract that they control that email via a zero-knowledge proof.
+5. Student claims the USDC equivalent of their purchase from the smart contract, with the help of a Chainlink Functions oracle that checks the database.
    
 #### The steps in further detail:
 
