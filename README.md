@@ -21,7 +21,7 @@ This project creates a platform that connects “donors” to UCLA students who 
    3. Proof Generation
       - Joe Bruin generates a cryptographic proof with a zkey generated from the `circuits/src/DhruvEmailVerifier.circom` circuit.
       - Joe generates the proof using values from an email he received at "joebruin@g.ucla.edu" as the inputs to the circuit.
-      - By using an email Joe received at "joebruin@g.ucla.edu" to generate inputs to the circuit allows Joe Bruin to generate a proof that proves to others that he is a UCLA student in control of the email address joebruin@g.ucla.edu.
+      - The proof allows Joe Bruin to prove to others that he is a UCLA student in control of the email address joebruin@g.ucla.edu.
    4. On-Chain Verification
       - Joe Bruin submits this proof to the `VerifyEmail()` function of `contracts/src/TheFund.sol` using his ethereum address 0xabc.
       - If the proof is verified, "joebruin@g.ucla.edu" is stored in a mapping in the smart contract as: "joebruin@g.ucla.edu"-->0xabc.
