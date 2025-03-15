@@ -37,6 +37,9 @@ contract EmailOracle is ChainlinkClient, ConfirmedOwner {
         theFundContractAddr = _theFundContractAddr;
     }
 
+    /**
+     * Create a Chainlink request to retrieve API response
+     */
     function requestPriceData(string calldata emailAddress) external returns (bytes32 requestId) {
         require(msg.sender == theFundContractAddr, "Only TheFund can call this function");
         Chainlink.Request memory req = _buildChainlinkRequest(
@@ -64,7 +67,7 @@ contract EmailOracle is ChainlinkClient, ConfirmedOwner {
     }
 
     /**
-     * Receive the response in the form of uint256
+     * Receive the api response in the form of uint256
      */
     function fulfill(
         bytes32 _requestId,
