@@ -1,4 +1,4 @@
-pragma solidity 0.8.20;
+pragma solidity ^0.8.0;
 //0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238
 //0x0000000000000000000000000000000000000000
 import {Script} from "forge-std/Script.sol";
