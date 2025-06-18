@@ -1,6 +1,8 @@
 # The Book Fund
 A proof of concept of a method to disperse funds to targeted recipients using zero knowledge proofs (generated with the ZKEmail library) and an oracle (Chainlink Functions). More specifically, a method to allow people to verify their identity onchain via a cryptographic proof generated from a received email, then disperse some amount of USDC to the verified identity based on a defined mapping of identities to values stored in a database accessed by a Chainlink Oracle.
-
+<br>
+Video Explanation - https://www.youtube.com/watch?v=Pt1bQCVIWGg&t=1s&ab_channel=DhruvPareek
+<br>
 This project implements that framework to create a platform which connects "donors" to UCLA students purchasing items from a retailer, allowing UCLA students who purchased something to redeem money equivalent to their purchases. I specified it further, by creating a pretend example where UCLA students who purchased books from a book retailer can receive money corresponding to the amount of money they spent purchasing books. The project works by:
    1. A donor "deposits" or "donates" USDC into the smart contract.
    2. Joe Bruin, a UCLA student (with email address joebruin@g.ucla.edu), purchases a book online through a retailer for $23.94 (arbitrary amount).
